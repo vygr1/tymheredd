@@ -1,10 +1,15 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
+# 20180618
 # Maintains a file with today and tomorrow's temperature data, downloaded from BOM
 # IDN10035.xml is the Canberra week ahead forecast product.
 # Output is a pickle package file (forecast.pkl) of an array of two dictionaries containing forecast min, max, and probability of rain
 #
-# 20180618
+# 20200115
+# Fixed a bug where the timezone was not parsed and the script broke in DST
+#
+# 20200206
+# Fixed a bug where today's date dictionary effectively stored the last time the script was run
 
 import ftplib, datetime
 
@@ -52,7 +57,9 @@ def downloadForecast():
 
     #Extract data for today
     for elem in tree.findall('forecast/area[@aac="NSW_PT027"]/forecast-period[@index="0"]'):
-        date0 = datetime.datetime.strptime(elem.attrib['start-time-local'], '%Y-%m-%dT%H:%M:%S+10:00')
+        date0 = datetime.datetime.strptime(elem.attrib['start-time-local'], '%Y-%m-%dT%H:%M:%S%z')
+        print("date just parsed")
+        print(date0)
         for child in elem:
             if (str(child.attrib['type']) == "air_temperature_minimum"):
                 minTemp0 = child.text
@@ -63,7 +70,7 @@ def downloadForecast():
 
     #Extract data for tomorrow
     for elem in tree.findall('forecast/area[@aac="NSW_PT027"]/forecast-period[@index="1"]'):
-        date1 = datetime.datetime.strptime(elem.attrib['start-time-local'], '%Y-%m-%dT%H:%M:%S+10:00')
+        date1 = datetime.datetime.strptime(elem.attrib['start-time-local'], '%Y-%m-%dT%H:%M:%S%z')
         for child in elem:
             if (str(child.attrib['type']) == "air_temperature_minimum"):
                 minTemp1 = child.text
@@ -97,6 +104,9 @@ try:
         #Append the new forecast and delete the old
         data.append(tomorrow)
         data.pop(0)
+
+        #update date (in case the script isn't run daily)
+        data[0]['date'] = datetime.date.today()
 
         #update today with the latest data, if it was in the latest XML file
         if (today['minTemp'] != "--"):

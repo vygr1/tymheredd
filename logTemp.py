@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 # Reads the temp <samples> times from each sensor waiting ~1 second between reads
 # Appends the average of the reads to a file
