@@ -17,3 +17,9 @@ Output is a pickle package file, *forecast.pkl*, of an array of two dictionaries
 
 ## logTemp.py
 [Temperature sensor](https://core-electronics.com.au/waterproof-ds18b20-digital-temperature-sensor.html) logging. Reads the temp <samples> times from each sensor waiting ~1 second between reads. Appends the average of the reads to a file.
+
+## printForecast.py
+Outputs data stored in forecast.py's pickle file to the console.
+
+## testTempSensors.py
+Outputs a reading from each temperature sensor to the console.
