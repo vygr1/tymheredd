@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #
-# Reads the temp from each sensor
+# Reads the temp from each sensor and prints the reading to the console
 #
 # 20200208
 
