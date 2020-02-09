@@ -21,3 +21,5 @@ def getTemp(location):
         return (float(0.0))
 
 print("Inside temp: " + str(getTemp(inside)))
+print("Outside temp: " + str(getTemp(outside)))
+print("Roof temp: " + str(getTemp(roof)))
